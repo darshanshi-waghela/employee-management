@@ -49,7 +49,7 @@ jobs:
       - name: Build image for scanning
         run: docker build -t employee-management:scan .
 
-      -       - name: Scan image with Trivy
+      - name: Scan image with Trivy
         run: |
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \

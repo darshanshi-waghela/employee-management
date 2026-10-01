@@ -5,6 +5,8 @@ from flask_login import (
     LoginManager, UserMixin, login_user, logout_user, login_required
 )
 from werkzeug.security import generate_password_hash, check_password_hash
+from prometheus_flask_exporter import PrometheusMetrics
+from prometheus_client import CollectorRegistry
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -54,6 +56,7 @@ def create_app(test_config=None):
 
     db.init_app(app)
     login_manager.init_app(app)
+    PrometheusMetrics(app, registry=CollectorRegistry())
 
     with app.app_context():
         db.create_all()

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: employee-management
-          image: employee-management:1.0
+          image: employee-management:1.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000

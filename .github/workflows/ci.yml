@@ -26,8 +26,39 @@ jobs:
       - name: Run tests
         run: pytest -v
 
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install security tools
+        run: pip install bandit pip-audit
+
+      - name: Scan code with Bandit
+        run: bandit -r app.py -lll
+
+      - name: Scan dependencies with pip-audit
+        run: pip-audit -r requirements.txt
+
+      - name: Build image for scanning
+        run: docker build -t employee-management:scan .
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: employee-management:scan
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+
   build-and-push:
-    needs: test
+    needs: [test, security]
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:

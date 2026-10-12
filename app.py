@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
     LoginManager, UserMixin, login_user, logout_user, login_required
@@ -64,6 +64,10 @@ def create_app(test_config=None):
     @app.get("/health")
     def health():
         return jsonify({"status": "ok"}), 200
+
+    @app.get("/")
+    def home():
+        return send_file(os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html"))
 
     @app.post("/register")
     def register():

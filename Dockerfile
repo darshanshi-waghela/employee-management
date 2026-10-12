@@ -12,7 +12,7 @@ RUN apt-get update \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app.py .
+COPY app.py index.html ./
 
 # Run as a non-root user (better security)
 RUN useradd --create-home appuser \
